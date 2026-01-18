@@ -120,7 +120,7 @@ Future<bool> showConfirmDialog(BuildContext context, String title) async {
         ),
         ElevatedButton(
           onPressed: () => Navigator.pop(context, true),
-          child: const Text("Delete"),
+          child: const Text("Delete "),
         ),
       ],
     ),
