@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
-import '../../../core/constants/app_theme.dart';
 import '../controller/task_controller.dart';
+import '../controller/theme_controller.dart';
 import '../widgets/task_tile.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -52,10 +53,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 hintText: "Search tasks...",
                 prefixIcon: const Icon(Icons.search),
                 filled: true,
+                fillColor: Theme.of(context).colorScheme.surface,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide.none,
                 ),
               ),
+
               onChanged: (value) {
                 context.read<TaskController>().setSearch(value);
               },
@@ -73,13 +77,26 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 }
 
-                return ListView.builder(
-                  itemCount: list.length,
-                  itemBuilder: (context, index) {
-                    final task = list[index];
-                    return TaskTile(task: task);
-                  },
+                return AnimationLimiter(
+                  child: ListView.builder(
+                    itemCount: list.length,
+                    itemBuilder: (context, index) {
+                      final task = list[index];
+
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: const Duration(milliseconds: 400),
+                        child: SlideAnimation(
+                          verticalOffset: 50,
+                          child: FadeInAnimation(
+                            child: TaskTile(task: task),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 );
+
               },
             ),
           ),

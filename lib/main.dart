@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'core/constants/app_theme.dart';
 import 'core/routes/app_routes.dart';
 import 'data/model/task_model.dart';
 import 'feature/tasks/controller/task_controller.dart';
+import 'feature/tasks/controller/theme_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

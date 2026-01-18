@@ -34,13 +34,21 @@ class TaskTile extends StatelessWidget {
         ],
       ),
       child: Card(
+        elevation: 3,
+        shadowColor: Theme.of(context).colorScheme.primary.withOpacity(.3),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
+        ),
         margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        elevation: 2,
         child: ListTile(
-          leading: Checkbox(
-            value: task.isCompleted,
-            onChanged: (_) =>
-                context.read<TaskController>().toggleTask(task),
+          leading: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: Checkbox(
+              key: ValueKey(task.isCompleted),
+              value: task.isCompleted,
+              onChanged: (_) =>
+                  context.read<TaskController>().toggleTask(task),
+            ),
           ),
           title: Text(
             task.title,
@@ -51,9 +59,31 @@ class TaskTile extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          subtitle: Text(
-            "${task.priority}${task.dueDate != null ? " • ${task.dueDate!.toLocal().toString().split(" ")[0]}" : ""}",
+          subtitle: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: getPriorityColor(task.priority, context).withOpacity(.15),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  task.priority,
+                  style: TextStyle(
+                    color: getPriorityColor(task.priority, context),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              if (task.dueDate != null)
+                Text(
+                  task.dueDate!.toLocal().toString().split(" ")[0],
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+            ],
           ),
+
           trailing: GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, "/add", arguments: task);
@@ -66,5 +96,17 @@ class TaskTile extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+
+Color getPriorityColor(String p, BuildContext context) {
+  switch (p) {
+    case "High":
+      return Colors.redAccent;
+    case "Medium":
+      return Colors.orangeAccent;
+    default:
+      return Colors.green;
   }
 }
