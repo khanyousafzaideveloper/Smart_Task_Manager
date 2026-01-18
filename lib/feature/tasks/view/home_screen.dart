@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../core/constants/app_theme.dart';
 import '../controller/task_controller.dart';
 import '../widgets/task_tile.dart';
 
@@ -23,6 +24,18 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text("Smart Task Manager"),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(
+              context.watch<ThemeController>().isDark
+                  ? Icons.light_mode
+                  : Icons.dark_mode,
+            ),
+            onPressed: () {
+              context.read<ThemeController>().toggleTheme();
+            },
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -30,23 +43,71 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         child: const Icon(Icons.add),
       ),
-      body: Consumer<TaskController>(
-        builder: (context, controller, _) {
-          if (controller.tasks.isEmpty) {
-            return const Center(
-              child: Text("No tasks yet. Add one!"),
-            );
-          }
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: "Search tasks...",
+                prefixIcon: const Icon(Icons.search),
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onChanged: (value) {
+                context.read<TaskController>().setSearch(value);
+              },
+            ),
+          ),
 
-          return ListView.builder(
-            itemCount: controller.tasks.length,
-            itemBuilder: (context, index) {
-              final task = controller.tasks[index];
-              return TaskTile(task: task);
-            },
-          );
-        },
+          Expanded(
+            child: Consumer<TaskController>(
+              builder: (context, controller, _) {
+                final list = controller.filteredTasks;
+
+                if (list.isEmpty) {
+                  return const Center(
+                    child: Text("No tasks found"),
+                  );
+                }
+
+                return ListView.builder(
+                  itemCount: list.length,
+                  itemBuilder: (context, index) {
+                    final task = list[index];
+                    return TaskTile(task: task);
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
+}
+
+
+Future<bool> showConfirmDialog(BuildContext context, String title) async {
+  final result = await showDialog<bool>(
+    context: context,
+    builder: (_) => AlertDialog(
+      title: const Text("Confirm"),
+      content: Text(title),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, false),
+          child: const Text("Cancel"),
+        ),
+        ElevatedButton(
+          onPressed: () => Navigator.pop(context, true),
+          child: const Text("Delete"),
+        ),
+      ],
+    ),
+  );
+
+  return result ?? false;
 }
