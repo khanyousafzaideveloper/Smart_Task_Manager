@@ -33,64 +33,69 @@ class TaskTile extends StatelessWidget {
           ),
         ],
       ),
-      child: Card(
-        elevation: 3,
-        shadowColor: Theme.of(context).colorScheme.primary.withOpacity(.3),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
-        ),
-        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        child: ListTile(
-          leading: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            child: Checkbox(
-              key: ValueKey(task.isCompleted),
-              value: task.isCompleted,
-              onChanged: (_) =>
-                  context.read<TaskController>().toggleTask(task),
-            ),
+      child: InkWell(
+        onTap: () {
+          Navigator.pushNamed(context, "/detail", arguments: task);
+        },
+        child: Card(
+          elevation: 3,
+          shadowColor: Theme.of(context).colorScheme.primary.withOpacity(.3),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
           ),
-          title: Text(
-            task.title,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              decoration: task.isCompleted ? TextDecoration.lineThrough : null,
+          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          child: ListTile(
+            leading: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: Checkbox(
+                key: ValueKey(task.isCompleted),
+                value: task.isCompleted,
+                onChanged: (_) =>
+                    context.read<TaskController>().toggleTask(task),
+              ),
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          subtitle: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: getPriorityColor(task.priority, context).withOpacity(.15),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  task.priority,
-                  style: TextStyle(
-                    color: getPriorityColor(task.priority, context),
-                    fontWeight: FontWeight.w600,
+            title: Text(
+              task.title,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                decoration: task.isCompleted ? TextDecoration.lineThrough : null,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            subtitle: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: getPriorityColor(task.priority, context).withOpacity(.15),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    task.priority,
+                    style: TextStyle(
+                      color: getPriorityColor(task.priority, context),
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              if (task.dueDate != null)
-                Text(
-                  task.dueDate!.toLocal().toString().split(" ")[0],
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-            ],
-          ),
+                const SizedBox(width: 8),
+                if (task.dueDate != null)
+                  Text(
+                    task.dueDate!.toLocal().toString().split(" ")[0],
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+              ],
+            ),
 
-          trailing: GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, "/add", arguments: task);
-            },
-            child: const Icon(
-              Icons.edit,
-              size: 30.0,
+            trailing: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, "/add", arguments: task);
+              },
+              child: const Icon(
+                Icons.edit,
+                size: 30.0,
+              ),
             ),
           ),
         ),

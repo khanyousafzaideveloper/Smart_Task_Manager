@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
+import '../widgets/app_appBar.dart';
 import '../controller/task_controller.dart';
 import '../controller/theme_controller.dart';
 import '../widgets/task_tile.dart';
@@ -22,22 +23,22 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Smart Task Manager"),
-        centerTitle: true,
+      appBar: AppAppBar(
+          title: "Smart Task Manager",
         actions: [
-          IconButton(
-            icon: Icon(
-              context.watch<ThemeController>().isDark
-                  ? Icons.light_mode
-                  : Icons.dark_mode,
-            ),
-            onPressed: () {
-              context.read<ThemeController>().toggleTheme();
-            },
-          ),
+              IconButton(
+                icon: Icon(
+                  context.watch<ThemeController>().isDark
+                      ? Icons.light_mode
+                      : Icons.dark_mode,
+                ),
+                onPressed: () {
+                  context.read<ThemeController>().toggleTheme();
+                },
+              ),
         ],
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushNamed(context, "/add");

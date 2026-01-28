@@ -36,10 +36,6 @@ class TaskController extends ChangeNotifier {
     return list;
   }
 
-  void setFilter(String value) {
-    _filter = value;
-    notifyListeners();
-  }
 
   void setSearch(String value) {
     _search = value;

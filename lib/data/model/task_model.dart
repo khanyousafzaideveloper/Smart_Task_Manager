@@ -12,17 +12,21 @@ class TaskModel extends HiveObject {
   String title;
 
   @HiveField(2)
-  bool isCompleted;
+  String description;
 
   @HiveField(3)
-  DateTime? dueDate;
+  bool isCompleted;
 
   @HiveField(4)
+  DateTime? dueDate;
+
+  @HiveField(5)
   String priority;
 
   TaskModel({
     required this.id,
     required this.title,
+    required this.description,
     this.isCompleted = false,
     this.dueDate,
     this.priority = "Low",

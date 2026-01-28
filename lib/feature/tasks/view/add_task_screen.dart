@@ -2,21 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../../../data/model/task_model.dart';
+import '../widgets/app_appBar.dart';
+import '../widgets/app_textFiled.dart';
 import '../controller/task_controller.dart';
+import '../widgets/primary_button.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
 
   @override
   State<AddTaskScreen> createState() => _AddTaskScreenState();
-
-
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
   final _controller = TextEditingController();
   DateTime? _dueDate;
   String _priority = "Low";
+  final _descController = TextEditingController();
+
 
   void _pickDate() async {
     final date = await showDatePicker(
@@ -40,6 +43,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
     if (editingTask != null) {
       editingTask!.title = _controller.text.trim();
+      editingTask!.description = _descController.text.trim();
       editingTask!.priority = _priority;
       editingTask!.dueDate = _dueDate;
 
@@ -48,6 +52,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       final task = TaskModel(
         id: const Uuid().v4(),
         title: _controller.text.trim(),
+        description: _descController.text.trim(),
         dueDate: _dueDate,
         priority: _priority,
       );
@@ -61,18 +66,19 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(editingTask == null ? "Add Task" : "Edit Task")),
+      appBar: AppAppBar(title: editingTask == null ? "Add Task" : "Edit Task"),
+
+      // appBar: AppBar(title: Text(editingTask == null ? "Add Task" : "Edit Task")),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            TextField(
-              controller: _controller,
-              decoration: const InputDecoration(
-                labelText: "Task Title",
-                border: OutlineInputBorder(),
-              ),
-            ),
+            AppTextField(controller: _controller, label: "Task Title"),
+
+            const SizedBox(height: 16),
+
+            AppTextField(controller: _descController, label: "Task Detail", maxLines: 4),
+
             const SizedBox(height: 16),
 
             DropdownButtonFormField<String>(
@@ -109,13 +115,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
             const Spacer(),
 
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _saveTask,
-                child: const Text("Save Task"),
-              ),
-            ),
+            PrimaryButton(title: "Save Task", onPressed: _saveTask),
+
           ],
         ),
       ),
@@ -135,12 +136,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
     if (task != null) {
       _controller.text = task.title;
+      _descController.text = task.description;
       _priority = task.priority;
       _dueDate = task.dueDate;
       editingTask = task;
     }
   }
-
 
   TaskModel? editingTask;
 }
