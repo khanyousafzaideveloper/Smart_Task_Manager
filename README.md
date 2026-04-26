@@ -33,5 +33,5 @@ A modern Flutter app to manage your daily tasks efficiently. Stay organized, boo
 Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/smart_task_manager.git
+git clone https://github.com/khanyousafzaideveloper/Smart_Task_Manager.git
 cd smart_task_manager
