@@ -1,17 +1,37 @@
-# smart_task_manager
+# ✅ Smart Task Manager
 
-A new Flutter project.
+A modern Flutter app to manage your daily tasks efficiently. Stay organized, boost productivity, and never miss important work.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## ✨ Features
 
-A few resources to get you started if this is your first Flutter project:
+- 📝 Create and manage tasks بسهولة
+- ✏️ Edit tasks anytime
+- 📋 View task details
+- 🏠 Clean and intuitive home screen
+- 🎯 Simple and productivity-focused UI
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# Smart_Task_Manager
+## 📸 Screenshots
+
+<p align="center">
+  <img src="assets/home.png" width="250"/>
+  <img src="assets/add.png" width="250"/>
+  <img src="assets/detail.png" width="250"/>
+</p>
+
+<p align="center">
+  <img src="assets/edit.png" width="250"/>
+</p>
+
+---
+
+## 🚀 Getting Started
+
+Clone the repository:
+
+```bash
+git clone https://github.com/your-username/smart_task_manager.git
+cd smart_task_manager
